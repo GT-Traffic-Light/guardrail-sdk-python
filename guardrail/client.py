@@ -497,29 +497,4 @@ class GuardrailClient:
         """DELETE /v2/organizations/:id — delete an organization."""
         return self._request("DELETE", f"/v2/organizations/{org_id}", token=token)
 
-    # ==================================================================
-    # Admin — Feature Flags (requires Keycloak 'admin' realm role)
-    # ==================================================================
 
-    def get_feature_flags(self, token: Optional[str] = None) -> Dict[str, Any]:
-        """GET /v2/admin/features — list all feature flag overrides."""
-        return self._request("GET", "/v2/admin/features", token=token)
-
-    def set_feature_flag(
-        self,
-        name: str,
-        global_kill_switch: Optional[bool] = None,
-        tier_overrides: Optional[Dict[str, bool]] = None,
-        token: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """PUT /v2/admin/features/:name — upsert a feature flag override."""
-        body: Dict[str, Any] = {}
-        if global_kill_switch is not None:
-            body["globalKillSwitch"] = global_kill_switch
-        if tier_overrides is not None:
-            body["tierOverrides"] = tier_overrides
-        return self._request("PUT", f"/v2/admin/features/{name}", token=token, body=body)
-
-    def delete_feature_flag(self, name: str, token: Optional[str] = None) -> Dict[str, Any]:
-        """DELETE /v2/admin/features/:name — remove a feature flag override."""
-        return self._request("DELETE", f"/v2/admin/features/{name}", token=token)
